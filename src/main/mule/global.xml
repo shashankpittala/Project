@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns:secure-properties="http://www.mulesoft.org/schema/mule/secure-properties" xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd
+http://www.mulesoft.org/schema/mule/secure-properties http://www.mulesoft.org/schema/mule/secure-properties/current/mule-secure-properties.xsd
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd">
+	<http:listener-config name="dfpcl-email-sapi-httpListenerConfig" doc:description="Listener Configurations">
+        <http:listener-connection host="${https.host}" port="${https.port}" readTimeout="${https.timeout}"/>
+    </http:listener-config>
+    <apikit:config name="dfpcl-email-sapi-config" api="resource::47c188d3-af7c-4666-9495-ac9b8536a0b3:dfpcl-email-sapi:1.0.0:raml:zip:dfpcl-email-sapi.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" doc:description="API Kit Router Configuration"/>
+	<email:smtp-config name="Email_SMTP" doc:name="Email SMTP" doc:id="e1260411-5475-468e-a528-08e223f190a5" doc:description="Email Connector Configuration">
+		<email:smtp-connection host="${smtp.host}" user="${smtp.username}" password="${secure::smtp.password}" port="${smtp.port}" timeoutUnit="MINUTES"/>
+	</email:smtp-config>
+	<configuration-properties doc:name="Configuration properties" doc:id="a7e3bc3b-8288-453f-99a4-868b5b5dc84e" file="config\config.yaml" doc:description="Common Properties" />
+    <configuration-properties doc:name="Configuration properties" doc:id="f50c9ead-8f28-413f-9cb7-1f0586dcfd5a" file="config\config-${mule.env}.yaml" doc:description="Environment Specific Properties" />
+    <configuration doc:name="Configuration" doc:id="b72f0a8f-fd15-47a3-b0c3-d02926d78635" doc:description="Global Error Handler" defaultErrorHandler-ref="global-error-handler" />
+    <global-property doc:name="Global Property" doc:id="e3bad3b5-ae27-4c4d-b94d-d1e5c771a476" name="mule.env" value="local" doc:description="Environment Property" />
+    <global-property doc:name="Global Property" doc:id="6685aafa-75ba-48cf-80cf-a1fbf9ca65d2" name="mule.key" value="mulesoft12345678" doc:description="Encryption Key" />
+	<secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="2e9b46cd-0c25-42cc-83f8-b8fc9253eaa8" file="config\config-secured-${mule.env}.yaml" key="${mule.key}" doc:description="Secure Configuration Properties"/>
+	<!-- <api-gateway:autodiscovery apiId="${autodiscovery.id}" ignoreBasePath="true" doc:name="API Autodiscovery" doc:id="8222a388-0245-42d2-a018-eb9a249dff1a" flowRef="dfpcl-email-sapi-main" /> -->
+</mule>

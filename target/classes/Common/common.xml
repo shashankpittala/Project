@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd">
+	<email:smtp-config name="Email_SMTP1" doc:name="Email SMTP" doc:id="6042a932-a519-4847-93cb-e809d8ecb727" >
+		<email:smtp-connection host="mail.dfpcl.com" port="587" user="noreply.mulesoftnotification@dfpcl.com" password="Welcome@5151#" timeoutUnit="MINUTES" connectionTimeout="10" readTimeout="10" writeTimeout="10" />
+	</email:smtp-config>
+	<sub-flow name="send-email-flow" doc:id="03d1c192-08fd-4594-9f48-6cec9c53266a" >
+		<logger level="INFO" doc:name="Request Logger" doc:id="a9614890-50d3-4ae8-89e1-8d8a543a51e1" message='#[output application/json --- {&#10;	"message": "Request to send email notification"&#10;}]'/>
+		<!-- [STUDIO:"SMTP Email Send"]<email:send doc:name="SMTP Email Send" doc:id="5e77191f-ba55-4774-943c-61cd7f2096e7" fromAddress="#[payload.fromAddress&#93;" subject="#[payload.emailSubject&#93;" toAddresses="#[vars.toAddress&#93;" config-ref="Email_SMTP">
+			<reconnect frequency="${reconnect.frequency}" count="${reconnect.count}" />
+			<email:body contentType="text/html" encoding="UTF-8">
+				<email:content><![CDATA[#[payload.emailBody&#93;&#93;&#93;></email:content>
+			</email:body>
+		</email:send> [STUDIO] -->
+		<email:send doc:name="Send" doc:id="8a79a6ad-4f62-4b26-a9b2-3916573994e9" config-ref="Email_SMTP1" toAddresses='#[["bhargav_k@cloudodyssey.co","mohamed.nousheed@cloudodyssey.co"]]' fromAddress="noreply.mulesoftnotification@dfpcl.com" subject="Hi">
+			<email:body >
+				<email:content ><![CDATA[#["Hi"]]]></email:content>
+			</email:body>
+		</email:send>
+		<logger level="INFO" doc:name="Response Logger" doc:id="182d53a7-1f5c-4573-a65a-ad3bd92da660" message='#[output application/json --- {&#10;	"message": "Response received after sending email"&#10;}]'/>
+	</sub-flow>
+</mule>

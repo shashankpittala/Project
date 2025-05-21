@@ -1,0 +1,9 @@
+# API configuration
+autodiscovery:
+ id: "1"
+  
+# SMTP configuration
+smtp:
+  host: "mail.dfpcl.com"
+  port: "587"
+  username: "noreply.mulesoftnotification@dfpcl.com"

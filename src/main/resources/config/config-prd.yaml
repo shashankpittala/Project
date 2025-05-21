@@ -1,0 +1,10 @@
+# API configuration
+autodiscovery:
+ id: ""
+  
+# SMTP configuration
+smtp:
+  host: ""
+  port: ""
+  username: ""
+  password: ""

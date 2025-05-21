@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<error-handler name="global-error-handler" doc:id="1858db0e-e7ac-4d0a-ab22-84f640f37d79" >
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="18d5229e-f616-42f5-a0b6-31ee113a45f2" type="EMAIL:CONNECTIVITY, EMAIL:RETRY_EXHAUSTED, EMAIL:SEND">
+			<ee:transform doc:name="Create Error Payload" doc:id="e95726dd-8b5a-4dec-ab6a-d785437e11af" >
+				<ee:message >
+					<ee:set-payload resource="dwl/common-error-handler.dwl" />
+				
+</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+		<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="2e4cb230-ece1-49ff-8d00-c65f65810baf" >
+			<ee:transform doc:name="Create Error Payload" doc:id="949e12e0-fef9-4d49-af3e-6d3eb1d70b7a" >
+				<ee:message >
+					<ee:set-payload resource="dwl/common-error-handler.dwl" />
+				
+</ee:message>
+			</ee:transform>
+		</on-error-propagate>
+	</error-handler>
+</mule>

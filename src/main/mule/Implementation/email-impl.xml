@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:email="http://www.mulesoft.org/schema/mule/email"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/email http://www.mulesoft.org/schema/mule/email/current/mule-email.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<sub-flow name="send-email-impl-flow" doc:id="20e45a7e-b925-4dbc-92d9-181fedd0fac3" >
+		<!--  <flow-ref doc:name="start-subflow" doc:id="ce1838c4-5e3f-44da-b81f-c31b7a0a8363" name="start-subflow"/>-->
+		<set-variable value='#[payload.toAddress splitBy "," map($ )]' doc:name="toAddress" doc:id="00254210-791e-42fe-9ff6-7de09c901643" variableName="toAddress" />
+		<flow-ref doc:name="Flow Reference" doc:id="99ea7bfc-5ef1-4a52-8782-2431f823a3d6" name="send-email-flow" />
+	<!--  	<flow-ref doc:name="end-subflow" doc:id="0160e473-5c91-4e43-a7c3-2dd55f45d298" name="end-subflow"/>-->
+		
+	</sub-flow>
+</mule>

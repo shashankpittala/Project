@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd ">
+    <flow name="dfpcl-email-sapi-main">
+        <http:listener config-ref="dfpcl-email-sapi-httpListenerConfig" path="${https.path}">
+            <http:response statusCode="#[vars.httpStatus default 200]">
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:response>
+            <http:error-response statusCode="#[vars.httpStatus default 500]">
+                <http:body><![CDATA[#[payload]]]></http:body>
+                <http:headers><![CDATA[#[vars.outboundHeaders default {}]]]></http:headers>
+            </http:error-response>
+        </http:listener>
+        <apikit:router config-ref="dfpcl-email-sapi-config" />
+    </flow>
+    <flow name="post:\messages:application\json:dfpcl-email-sapi-config">
+        <logger level="INFO" doc:name="Start Logger" doc:id="39270c73-2c54-4061-806d-f8ae217e4818" message="*********** Send Emails Start Logger *******************"/>
+		<ee:transform doc:name="Initiate Variables" doc:id="fc3e381d-962a-41d2-bc59-1ffe869d3f18">
+            <ee:message />
+            <ee:variables>
+                <ee:set-variable variableName="correlationId"><![CDATA[%dw 2.0
+output application/json
+---
+attributes.headers.'x-correlation-id' default correlationId]]></ee:set-variable>
+                <ee:set-variable variableName="flowName"><![CDATA[%dw 2.0
+output application/json
+---
+flow.name]]></ee:set-variable>
+            </ee:variables>
+        </ee:transform>
+		<flow-ref doc:name="send-email-impl-flow" doc:id="58e625be-4b58-403a-b689-ea070ae53af0" name="send-email-impl-flow" />
+		<logger level="INFO" doc:name="End Logger" doc:id="989ba4bd-88b0-4db2-8687-1477dc202d75" message="*********** Send Emails End Logger *******************"/>
+    </flow>
+</mule>

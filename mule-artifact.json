@@ -1,0 +1,13 @@
+{
+  "minMuleVersion": "4.9.0",
+  "javaSpecificationVersions": [
+    "17"
+  ],
+  "secureProperties" : 
+  [
+  "mule.key",
+  "secure::smtp.password",
+  "anypoint.platform.client_id",
+  "anypoint.platform.client_secret"
+  ]
+}
